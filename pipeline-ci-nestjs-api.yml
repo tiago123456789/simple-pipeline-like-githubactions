@@ -1,0 +1,33 @@
+name: "Pipeline CI Nest.js api v2"
+
+steps:
+  
+  - name: Setup all libraries required to run pipeline
+    run: |
+      apk add --no-cache git
+      apk add --no-cache curl
+
+  - name: Clone github repository
+    run: |
+      rm -r buymeacoffee-web3
+      git clone https://github.com/tiago123456789/buymeacoffee-web3
+
+  - name: Setup project
+    run: |
+      cd ./buymeacoffee-web3/backend
+      npm install
+
+  - name: Run tests of project
+    run: |
+      cd ./buymeacoffee-web3/backend
+      npm run test
+
+  - name: Call webhook if everything is ok
+    trigger_if_success: true
+    run: |
+      curl ${params.WEBHOOK_URL} -X POST --data '{ "message": "Pipeline executed success" }'
+
+  - name: Call webhook if everything is failed
+    trigger_if_failed: true
+    run: |
+      curl ${params.WEBHOOK_URL} -X POST --data '{ "message": "Pipeline executed failed" }'

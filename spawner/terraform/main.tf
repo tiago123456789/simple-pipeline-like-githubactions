@@ -29,10 +29,17 @@ resource "google_cloud_run_v2_job" "template_create_cloud_run_job" {
 
     template {
       max_retries = 0
-      timeout     = "60s"
+      timeout     = "300s"
 
       containers {
         image = "us-east4-docker.pkg.dev/remember-me-my-bills/poc-pipeline/runner:latest"
+
+        resources {
+          limits = {
+            cpu    = "1"
+            memory = "2048Mi"
+          }
+        }
 
         env {
           name  = "PARAMS_DATA"
@@ -55,23 +62,6 @@ resource "google_cloud_run_v2_job" "template_create_cloud_run_job" {
 
 }
 
-# variable "push_endpoint" {
-#   type        = string
-#   description = "The url to send event of pub/sub"
-# }
-
-# resource "google_pubsub_topic" "start_pipeline" {
-#   name = "start_pipeline"
-# }
-
-# resource "google_pubsub_subscription" "main_subscription" {
-#   name  = "main-subscription"
-#   topic = google_pubsub_topic.start_pipeline.name
-
-#   push_config {
-#     push_endpoint = "${var.push_endpoint}/execute"
-#   }
-# }
 
 
 
