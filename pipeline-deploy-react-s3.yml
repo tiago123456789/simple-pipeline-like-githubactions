@@ -1,0 +1,35 @@
+name: "Deploy react.js website"
+
+steps:
+  
+  - name: Clone github repository
+    run: |
+      rm -r react-hello-world
+      git clone https://github.com/buddy-works/react-hello-world.git
+
+  - name: Setup project
+    run: |
+      cd ./react-hello-world
+      npm install
+
+  - name: Build react project
+    run: |
+      cd ./react-hello-world
+      npm run build
+
+  - name: Deploy react app on S3 bucket
+    run: |
+      cd ./react-hello-world
+      aws s3 --profile tiago sync ./build/ s3://react-hello-world-pipeline
+
+  - name: Call webhook if everything is ok
+    trigger_if_success: true
+    run: |
+      curl https://typedwebhook.tools/webhook/188fd1d4-dabf-4d08-b306-6dd924873727 -X POST --data '{ "message": "Pipeline executed success" }'
+
+  # - name: Call webhook if everything is failed
+  #   trigger_if_failed: true
+  #   run: |
+  #     curl https://typedwebhook.tools/webhook/03c7c743-5981-48a8-901c-1bfe3e3df7e3 -X POST --data '{ "message": "Pipeline executed failed" }'
+
+

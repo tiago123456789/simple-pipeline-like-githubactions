@@ -1,0 +1,19 @@
+name: "Trigger webhook"
+
+steps:
+  
+  - name: Install libraries
+    run: |
+      apk update
+      apk add --no-cache curl
+
+  - name: Trigger first webhook
+    run: |
+      curl https://typedwebhook.tools/webhook/bead9885-0063-4025-868b-32e0a1b6a75e -X POST --data '{"name":"First webhook"}'
+
+  - name: Trigger second webhook
+    run: |
+      curl https://typedwebhook.tools/webhook/bead9885-0063-4025-868b-32e0a1b6a75e -X POST --data '{"name":"Second webhook"}'
+
+
+

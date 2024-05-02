@@ -1,0 +1,35 @@
+name: "Clone project from github v4"
+
+steps:
+  
+  - name: Setup all libraries required to run pipeline
+    run: |
+      apk update
+      apk add --no-cache git
+      apk add --no-cache curl
+
+  - name: Clone github repository
+    run: |
+      rm -r quick-example-of-testing-in-nodejs
+      git clone https://github.com/Lissy93/quick-example-of-testing-in-nodejs.git
+
+  - name: Setup project
+    run: |
+      cd ./quick-example-of-testing-in-nodejs
+      npm install
+
+  - name: Run tests of project
+    run: |
+      cd ./quick-example-of-testing-in-nodejs
+      npm run test
+
+  - name: Call webhook if everything is ok
+    trigger_if_success: true
+    run: |
+      curl ${params.WEBHOOK_URL} -X POST --data '{ "message": "Pipeline executed success" }'
+
+  - name: Call webhook if everything is failed
+    trigger_if_failed: true
+    run: |
+      curl ${params.WEBHOOK_URL} -X POST --data '{ "message": "Pipeline executed failed" }'
+

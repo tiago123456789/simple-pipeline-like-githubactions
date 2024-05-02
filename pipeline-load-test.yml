@@ -1,0 +1,17 @@
+name: "Load test random urls"
+
+steps:
+  
+  - name: Load test Github
+    run: |
+      autocannon -a 1000 https://github.com/
+
+  - name: Load test Google
+    run: |
+      autocannon -a 1000 https://www.google.com/
+
+  - name: Load test Youtube
+    run: |
+      autocannon -a 1000 https://www.youtube.com/
+
+

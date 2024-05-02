@@ -1,0 +1,26 @@
+name: "CI pipeline Golnag v8"
+
+steps:
+  
+  - name: Setup all libraries required to run pipeline
+    run: |
+      apk update
+      apk add --no-cache git
+      apk update
+      apk add --no-cache curl
+      apk update
+      apk add --no-cache go
+
+  - name: Clone github repository
+    run: |
+      go version
+      rm -r ./github-actions-golang
+      git clone https://github.com/mvdan/github-actions-golang.git
+
+  - name: Run tests of project
+    run: |
+      cd ./github-actions-golang
+      go version
+      go test ./...
+
+

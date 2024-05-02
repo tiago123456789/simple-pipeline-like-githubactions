@@ -1,0 +1,17 @@
+{
+  "name": "collect-logs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy:dev": "gcloud functions deploy collect-log-dev --runtime nodejs20 --trigger-topic logs --entry-point main --allow-unauthenticated"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "knex": "^3.1.0",
+    "pg": "^8.11.5",
+    "pusher": "^5.2.0"
+  }
+}
